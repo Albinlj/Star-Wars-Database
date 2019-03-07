@@ -1,4 +1,4 @@
-var myDiv = document.getElementById("myDiv");
+var myUl = document.getElementById("myDiv");
 var myList = document.getElementById("myList");
 var myInput = document.getElementById("myInput");
 var myButton = document.getElementById("myButton");
@@ -6,32 +6,43 @@ var myButton = document.getElementById("myButton");
 myButton.onclick = () => search(myInput.value);
 
 async function search(searchString) {
+  myUl.innerHTML = "";
+
   let categories = "people planets films species vehicles starships".split(" ");
 
   categories.forEach(async function(category) {
     let results = await searchInCategory(category, searchString);
     if (results.length > 0) {
       let ul = document.createElement("ul");
-      myDiv.append(ul);
+      myUl.append(ul);
 
       let h3 = document.createElement("h3");
-      h3.innerHTML = category;
+      h3.innerHTML = toTitleCase(category);
       ul.append(h3);
 
       results.forEach(result => {
-        let listItem = document.createElement("li");
-        ul.append(listItem);
-
-        let a = document.createElement("a");
-        a.innerHTML = result.name;
-
-        let id = "https://swapi.co/api/" + category + "?search=" + result.name;
-        a.setAttribute("id", id);
-
-        listItem.append(a);
+        let li = document.createElement("a");
+        ul.append(li);
+        CreateLink(result.url, li);
       });
     }
   });
+}
+
+var progressMax = 1;
+var progressNow = 1;
+var lastUpdate = 1;
+
+function updateProgressbar() {
+  let bar = document.getElementsByClassName("progress-bar")[0];
+  if (progressNow >= lastUpdate) {
+    bar.style.width = (100 * progressNow) / progressMax + "%";
+    lastUpdate = progressNow;
+  }
+  if (progressNow == progressMax && progressMax != 0) {
+    bar.classList.remove("progress-bar-animated");
+    bar.classList.remove("progress-bar-striped");
+  }
 }
 
 async function doFetching(url) {
@@ -48,50 +59,63 @@ async function searchInCategory(category, searchParam) {
 }
 
 async function showInfo(json) {
-  myDiv.innerHTML = "";
+  myUl.innerHTML = "";
+  progressNow = 0;
+  progressMax = 0;
+  lastUpdate = 0;
+  updateProgressbar();
 
   for (const key in json) {
-    // console.log(key);
     if (
       json.hasOwnProperty(key) &&
       !"created edited url".split(" ").includes(key)
     ) {
-      let newDiv = document.createElement("div");
-      newDiv.id = key;
-      myDiv.append(newDiv);
-
       let element = json[key];
 
-      let label = document.createElement("h4");
-      label.innerHTML = toTitleCase(key);
-      newDiv.append(label);
+      if (element != "") {
+        let newDiv = document.createElement("div");
+        newDiv.id = key;
+        newDiv.classList.add("mt-3");
+        myUl.append(newDiv);
 
-      if (Array.isArray(element)) {
-        element.forEach(async function(e) {
-          CreateLink(e, newDiv);
-        });
-      } else if (("" + element).includes("https")) {
-        CreateLink(element, newDiv);
-      } else {
-        let p = document.createElement("p");
-        p.innerHTML = element;
-        myDiv.append(p);
+        let label = document.createElement("h6");
+        label.innerHTML = toTitleCase(key) + ":";
+        newDiv.append(label);
+
+        if (Array.isArray(element)) {
+          element.forEach(async function(e) {
+            CreateLink(e, newDiv);
+          });
+        } else if (("" + element).includes("https")) {
+          CreateLink(element, newDiv);
+        } else {
+          let p = document.createElement("p");
+          p.innerHTML = toTitleCase(element);
+          newDiv.append(p);
+        }
       }
     }
   }
-  // myDiv.innerHTML = "he";
 }
 
 async function CreateLink(url, parentElement) {
-  let a = document.createElement("a");
+  progressMax++;
+  let newButton = document.createElement("button");
   let name = await getNameOf(url);
-  a.innerHTML = name;
-  a.onclick = async () => {
+  newButton.innerHTML = name;
+  newButton.onclick = async () => {
     let info = await doFetching(url);
     showInfo(info);
   };
+  newButton.classList.add("btn");
+  newButton.classList.add("btn-link");
+  newButton.classList.add("py-0");
 
-  parentElement.append(a);
+  let adiv = document.createElement("div");
+  adiv.append(newButton);
+  parentElement.append(adiv);
+  progressNow++;
+  updateProgressbar();
 }
 
 async function getNameOf(url) {
@@ -104,8 +128,8 @@ async function getNameOf(url) {
 }
 
 function toTitleCase(str) {
-  return str
-    .replace("_", " ")
+  return ("" + str)
+    .replace(/_/g, " ")
     .replace(
       /\w\S*/g,
       txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
@@ -113,8 +137,9 @@ function toTitleCase(str) {
 }
 
 async function startup() {
-  let info = await doFetching("https://swapi.co/api/people/1");
-  showInfo(info);
+  // let info = await doFetching("https://swapi.co/api/people/1");
+  // showInfo(info);
+  // updateProgressbar();
 }
 
 // search("ma");

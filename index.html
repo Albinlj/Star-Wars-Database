@@ -4,14 +4,99 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>swapi getter</title>
+    <title>Star Wars Database</title>
+
+    <!-- <link
+      href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"
+      rel="stylesheet"
+    /> -->
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <!-- <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"
+    /> -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+      integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX"
+      crossorigin="anonymous"
+    /> -->
+
     <script src="script.js" defer></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
-    <input id="myInput" type="text" />
-    <button id="myButton">search</button>
-
-    <div id="myDiv"></div>
-    <ul id="myList"></ul>
+    <div class="container py-5 text-center"></div>
+    <div class="container text-center">
+      <div class="py-3">
+        <h1>Star Wars Database</h1>
+      </div>
+      <div class="input-group">
+        <input
+          class="form-control"
+          id="myInput"
+          type="text"
+          placeholder="Search"
+        />
+        <div class="input-group-btn">
+          <button id="myButton" class="btn btn-default">
+            Search
+          </button>
+        </div>
+      </div>
+      <div class="progress mb-4">
+        <div
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          role="progressbar"
+          aria-valuenow="70"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          style="width:1%;transition:none"
+        >
+          <span class="sr-only">70% Complete</span>
+        </div>
+      </div>
+      <div id="myDiv" class="col-sm-12">
+        <h4 class="py-2">Welcome to the Star Wars Database!</h4>
+        <p>
+          Make a search for people, planets, films, species, vehicles or
+          starships above.
+        </p>
+      </div>
+      <div
+        style="color:rgb(150, 150, 150); font-size:12px"
+        class="footer-copyright pt-5 mt-5 mb-3"
+      >
+        Data retrieved from
+        <a
+          style="color:rgb(150, 150, 150); font-size:12px"
+          href="https://swapi.co/"
+        >
+          The Star Wars API</a
+        >
+      </div>
+    </div>
   </body>
 </html>
